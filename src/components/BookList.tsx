@@ -3,10 +3,16 @@ import BookListItem from "./BookListItem";
 
 const BookList = () => {
   return (
-    <div className="flex flex-wrap gap-4 p-4 sm:p-6 justify-center">
-      {books.map((book) => (
-        <BookListItem key={book.id} book={book} />
-      ))}
+    <div className="p-4 ">
+      <div className="mb-3 w-full">
+        <h3 className="font-body text-md">All Books</h3>
+        <span className="text-sm text-gray-400">Showing {books.length} Items</span>
+      </div>
+      <div className="grid grid-cols-[repeat(auto-fit,_minmax(15rem,_1fr))]  gap-4 py-4">
+        {books.map((book) => (
+          <BookListItem key={book.id} book={book}/>
+        ))}
+      </div>
     </div>
   );
 };

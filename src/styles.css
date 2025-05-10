@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
 /* Custom CSS Variables or Styles can go below */
@@ -6,8 +6,12 @@
   --font-title: "Playfair Display", serif;
   --font-body: "Inter", sans-serif;
 
+  --color-primary-light: #6B5B91;
   --color-primary: #4B3F72;
+  --color-primary-dark: #3B2F5A;
   --color-secondary: #F0C987;
+  --color-secondary-dark: #D9B465;
   --color-accent: #3C9D9B;
-  --color-background: #EBE8DE;
+  --color-background: #f1eee3;
+  --color-background-dark: #dad5be;
 }
