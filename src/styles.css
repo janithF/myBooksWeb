@@ -1,11 +1,11 @@
-@import "tailwindcss";
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap");
+@import "tailwindcss";
 
+/* Custom CSS Variables or Styles can go below */
 @theme {
   --font-title: "Playfair Display", serif;
   --font-body: "Inter", sans-serif;
 
-  /* Colors from earlier */
   --color-primary: #4B3F72;
   --color-secondary: #F0C987;
   --color-accent: #3C9D9B;
