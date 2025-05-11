@@ -8,7 +8,7 @@ const BookList = () => {
   return (
     <div id="myBooks_booklist" className="p-4 overflow-y-auto">
       <div className="mb-3 w-full">
-        <h3 className="font-body text-md">All Books</h3>
+        <h3 className="text-md">All Books</h3>
         <span className="text-sm text-gray-400">Showing {books.length} Items</span>
       </div>
       <div className={`${viewMode === "grid" && "grid grid-cols-[repeat(auto-fit,_minmax(15rem,_1fr))] gap-4"}`}>

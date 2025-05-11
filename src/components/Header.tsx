@@ -16,19 +16,19 @@ const Header = () => {
       <div className="flex justify-center items-center">
         <div className="mr-4">
           <button
-            className={`p-3 hover:bg-secondary-dark cursor-pointer rounded-md text-primary ${viewMode === "grid" && 'bg-secondary'}`}
+            className={`p-3 cursor-pointer rounded-md text-app-primary ${viewMode === "grid" && 'bg-app-secondary'}`}
             onClick={() => dispatch(uiActions.toggleView("grid"))}
           >
             <BiSolidGridAlt />
           </button>
           <button
-            className={`p-3 hover:bg-secondary-dark cursor-pointer rounded-md text-primary ${viewMode === 'list' && 'bg-secondary'}`}
+            className={`p-3 cursor-pointer rounded-md text-app-primary ${viewMode === 'list' && 'bg-app-secondary'}`}
             onClick={() => dispatch(uiActions.toggleView("list"))}
           >
             <FaList />
           </button>
         </div>
-        <button className="flex justify-center items-center px-4 h-[40px] bg-primary text-white rounded-sm cursor-pointer hover:bg-primary-dark">
+        <button className="flex justify-center items-center px-4 h-[40px] bg-app-primary text-white rounded-sm cursor-pointer hover:bg-primary-dark">
           <FaPlus className="mr-2" />
           Add New book
         </button>

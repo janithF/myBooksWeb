@@ -25,7 +25,7 @@ const BookListItem = ({ book }: Props) => {
       <div className="relative bg-white shadow-md rounded-md overflow-hidden mb-2 flex max-w-[800px] group">
         <img src={book.img} alt={book.title} className="h-24 w-24 mr-4" />
         <div className="p-2 space-y-2">
-          <h2 className="text-xl font-light text-gray-800 line-clamp-2 font-body m-0">{book.title}</h2>
+          <h2 className="text-xl font-light text-gray-800 line-clamp-2 m-0">{book.title}</h2>
           <p className="text-sm text-gray-500">
             by <span className="capitalize">{book.author.toLowerCase()}</span>
           </p>
@@ -59,7 +59,7 @@ const BookListItem = ({ book }: Props) => {
     <div className="relative bg-white shadow-md rounded-xl overflow-hidden group">
       <img src={book.img} alt={book.title} className="h-60 w-full object-cover" />
       <div className="p-4 space-y-2">
-        <h2 className="text-xl font-light text-gray-800 line-clamp-2 font-body m-0">{book.title}</h2>
+        <h2 className="text-xl font-light text-gray-800 line-clamp-2 m-0">{book.title}</h2>
         <p className="text-sm text-gray-500">
           by <span className="capitalize">{book.author.toLowerCase()}</span>
         </p>
