@@ -13,7 +13,7 @@ const BookListItem = ({ book }: Props) => {
       <img src={book.img} alt={book.title} className="h-60 w-full object-cover" />
       <div className="p-4 space-y-2">
         <h2 className="text-xl font-light text-gray-800 line-clamp-2 font-body m-0">{book.title}</h2>
-        <p className="text-sm text-gray-500">by {book.author}</p>
+        <p className="text-sm text-gray-500">by <span className="capitalize">{book.author.toLowerCase()}</span></p>
         <div className="flex items-center gap-1 text-yellow-500">
           <FaStar />
           <span className="text-sm font-medium">{book.rating.toFixed(1)}</span>

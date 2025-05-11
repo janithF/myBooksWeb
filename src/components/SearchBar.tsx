@@ -10,7 +10,7 @@ const SearchBar = () => {
 
   return (
     <div className="w-full max-w-md font-title text-xl tracking-wider  rounded-full">
-      <div className="flex items-center border-0 pl-4">
+      <div className="flex items-center border-0">
         <input
           type="text"
           placeholder="Search Book Name"
