@@ -18,7 +18,7 @@ const SearchBar = () => {
           onChange={handleChange}
           className="w-full bg-transparent outline-none text-gray-700 placeholder-gray-400 border-b border-secondary py-1"
         />
-        <button className="bg-primary w-[60px] rounded-r-md text-white text-md p-2 text-md tracking-normal font-extralight cursor-pointer font-body hover:bg-primary-dark flex justify-center items-center">
+        <button className="bg-primary w-[60px] rounded-r-md text-white text-md h-[37px] text-md tracking-normal font-extralight cursor-pointer font-body hover:bg-primary-dark flex justify-center items-center">
           <FiSearch />
         </button>
       </div>
