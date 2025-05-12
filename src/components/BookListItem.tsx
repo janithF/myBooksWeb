@@ -3,16 +3,21 @@ import { FaStar } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa6";
 import { useAppSelector } from "../app/hooks";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./ui/dialog";
+import BookForm from "./BookForm";
+import { useState } from "react";
 
 interface Props {
   book: Book;
 }
 
 const BookListItem = ({ book }: Props) => {
+  const [open, setOpen] = useState(false);
   const viewMode = useAppSelector((state) => state.ui.viewMode);
 
   const onEditBook = () => {
     console.log("Edit book", book);
+    setOpen(true)
   };
 
   const onDeleteBook = () => {
@@ -23,7 +28,7 @@ const BookListItem = ({ book }: Props) => {
   if (viewMode === "list") {
     return (
       <div className="relative bg-white shadow-md rounded-md overflow-hidden mb-2 flex max-w-[800px] group">
-        <img src={book.img} alt={book.title} className="h-24 w-24 mr-4" />
+        <img src={book.image} alt={book.title} className="h-24 w-24 mr-4" />
         <div className="p-2 space-y-2">
           <h2 className="text-xl font-light text-gray-800 line-clamp-2 m-0">{book.title}</h2>
           <p className="text-sm text-gray-500">
@@ -57,7 +62,7 @@ const BookListItem = ({ book }: Props) => {
   // GRID MODE
   return (
     <div className="relative bg-white shadow-md rounded-xl overflow-hidden group">
-      <img src={book.img} alt={book.title} className="h-60 w-full object-cover" />
+      <img src={book.image} alt={book.title} className="h-60 w-full object-cover" />
       <div className="p-4 space-y-2">
         <h2 className="text-xl font-light text-gray-800 line-clamp-2 m-0">{book.title}</h2>
         <p className="text-sm text-gray-500">
@@ -84,6 +89,19 @@ const BookListItem = ({ book }: Props) => {
           <FaTrash />
         </div>
       </div>
+
+      {/* Edit Form Modal */}
+      <Dialog modal={true} open={open} onOpenChange={setOpen}>
+          <DialogContent className="w-[450px] p-0 bg-app-background gap-0" onInteractOutside={(e) => e.preventDefault()}>
+            <DialogHeader className="sm:text-center p-4 text-app-primary gap-0">
+              <DialogTitle className="font-bold text-2xl mb-2">Edit Book</DialogTitle>
+              <DialogDescription>{book.title}</DialogDescription>
+            </DialogHeader>
+            <div className="flex items-center space-x-2">
+              <BookForm onClose={()=>setOpen(false)} editFormData={book}/>
+            </div>
+          </DialogContent>
+        </Dialog>
     </div>
   );
 };

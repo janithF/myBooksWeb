@@ -3,7 +3,7 @@ import { BiSolidGridAlt } from "react-icons/bi";
 import { FaList, FaPlus } from "react-icons/fa6";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { uiActions } from "../features/UI/UISlice";
-import AddNewForm from "../components/AddNewForm";
+import BookForm from "./BookForm";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useState } from "react";
 
@@ -51,7 +51,7 @@ const Header = () => {
               <DialogTitle className="font-bold text-2xl mb-2">Add New Book</DialogTitle>
             </DialogHeader>
             <div className="flex items-center space-x-2">
-              <AddNewForm onClose={closeModal} />
+              <BookForm onClose={closeModal} />
             </div>
           </DialogContent>
         </Dialog>
