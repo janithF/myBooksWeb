@@ -7,7 +7,7 @@ interface InitialState {
 }
 
 const initialState: InitialState = {
-  viewMode: "list",
+  viewMode: "grid",
 };
 
 const UISlice = createSlice({
