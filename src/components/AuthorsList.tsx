@@ -1,9 +1,13 @@
 import { FaFeather } from "react-icons/fa6";
-import { books } from "../data";
+import useBooks from "@/hooks/useBooks";
+import LoadingAuthorsListItem from "./loadingSkeletons/LoadingAuthorsListItem";
+import { VscError } from "react-icons/vsc";
 
 const AuthorsList = () => {
+  const { data: books, error, isLoading } = useBooks();
+
   const getAuthors = (): string[] => {
-    const allAuthors: string[] = books.map((book) => book.author.toLowerCase().trim());
+    const allAuthors = books?.map((book) => book.author.toLowerCase().trim());
     const authors = [...new Set(allAuthors)];
     return authors;
   };
@@ -14,9 +18,19 @@ const AuthorsList = () => {
         <FaFeather className="mr-2" /> Authors
       </h3>
       <div className="overflow-y-auto">
-        {getAuthors().map((author, index) => (
-          <div key={index} className="mb-1 p-2 mr-2 cursor-pointer hover:bg-background rounded-md transition duration-50 ease-in-out capitalize">{author}</div>
-        ))}
+        {/* Loading */}
+        <div className="pt-2">{isLoading && [...Array(5)].map((_, index) => <LoadingAuthorsListItem key={index} />)}</div>
+
+        {/* Error Message */}
+        {error && <div className="p-2 flex items-center"><VscError className="text-red-400 mr-2" /><span className="text-sm">Error Loading Authors List</span></div>}
+
+        {/* Display Authors List */}
+        {!isLoading &&
+          getAuthors().map((author, index) => (
+            <div key={index} className="mb-1 p-2 mr-2 cursor-pointer hover:bg-background rounded-md transition duration-50 ease-in-out capitalize">
+              {author}
+            </div>
+          ))}
       </div>
     </div>
   );

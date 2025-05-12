@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-type ViewMode = "grid" | "list";
+export type ViewMode = "grid" | "list";
 
 interface InitialState {
   viewMode: ViewMode;
