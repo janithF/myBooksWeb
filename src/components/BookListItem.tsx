@@ -35,7 +35,6 @@ const BookListItem = ({ book }: Props) => {
   };
 
   const executeDelete = () => {
-    console.log("Delete book", book);
     closeOpenedDeleteAlert()
     deleteBook(book.id);
   };

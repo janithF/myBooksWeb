@@ -16,7 +16,7 @@ const useAddBook = <TFormType>(onAddComplete:()=>void) => {
         queryKey: CACHE_KEY_BOOKS,
       });
       toast.success("Added the Book Succesfully ");
-      onAddComplete()
+      onAddComplete();
     },
     onError: (error) => {
       toast.error("Failed to Add the Book", {

@@ -16,7 +16,7 @@ const BookListCard = ({ book, onEdit, onDelete }: Props) => {
       <div className="p-2 space-y-2">
         <h2 className="text-xl font-light text-gray-800 line-clamp-2 m-0">{book.title}</h2>
         <p className="text-sm text-gray-500">
-          by <span className="capitalize">{book.author.toLowerCase()}</span>
+          by <span className="capitalize">{book.author}</span>
         </p>
         <div className="flex items-center gap-1 text-yellow-500">
           <FaStar />

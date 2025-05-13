@@ -11,12 +11,12 @@ interface Props {
 
 const BookGridCard = ({ book, onEdit, onDelete }: Props) => {
   return (
-    <div className="relative bg-white shadow-md rounded-xl overflow-hidden group">
+    <div className="relative bg-white shadow-md rounded-xl overflow-hidden group max-w-[300px]">
       <img src={book.image} alt={book.title} className="h-60 w-full object-cover" />
       <div className="p-4 space-y-2">
         <h2 className="text-xl font-light text-gray-800 line-clamp-2 m-0">{book.title}</h2>
         <p className="text-sm text-gray-500">
-          by <span className="capitalize">{book.author.toLowerCase()}</span>
+          by <span className="capitalize">{book.author}</span>
         </p>
         <div className="flex items-center gap-1 text-yellow-500">
           <FaStar />

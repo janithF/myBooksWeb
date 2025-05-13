@@ -1,8 +1,10 @@
 import useBooks from "@/hooks/useBooks";
 import { Skeleton } from "./ui/skeleton";
+import { useAppSelector } from "@/app/hooks";
 
 const SubHeader = () => {
-  const { data: books, isLoading, error } = useBooks();
+  const { isLoading, error } = useBooks();
+  const bookListLength = useAppSelector((state) => state.ui.filteredBooksLength);
 
   if (isLoading) {
     return (
@@ -18,7 +20,9 @@ const SubHeader = () => {
       {!error && (
         <div className="w-full p-2">
           <h3 className="text-md">All Books</h3>
-          <span className="text-sm text-gray-400">Showing {books?.length} Items</span>
+          <span className="text-sm text-gray-400">
+            {bookListLength > 0 ? (bookListLength === 1 ? "1 Item" : `${bookListLength} Items`) : "No Items Found"}
+          </span>
         </div>
       )}
     </>
