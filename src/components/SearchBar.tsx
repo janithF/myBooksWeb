@@ -4,20 +4,34 @@ import { DevTool } from "@hookform/devtools";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FiSearch } from "react-icons/fi";
+import { useSearchParams } from "react-router-dom";
 
 interface FormValues {
   searchterm: string;
 }
 
 const SearchBar = () => {
-  const form = useForm<FormValues>();
-  const { register, control, watch } = form;
   const dispatch = useAppDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const defaultSearchParam = searchParams.get("search") || "";
+  
+  const form = useForm<FormValues>({
+    defaultValues: {
+      searchterm: defaultSearchParam,
+    },
+  });
+  const { register, control, watch } = form;
   const watchSearchTerm = watch("searchterm");
 
   useEffect(() => {
     dispatch(uiActions.searchBook(watchSearchTerm));
-  }, [watchSearchTerm, dispatch]);
+
+    if (watchSearchTerm) {
+      setSearchParams({ search: watchSearchTerm });
+    } else {
+      setSearchParams({});
+    }
+  }, [watchSearchTerm, dispatch, setSearchParams]);
 
   return (
     <div className="w-full max-w-md font-app-title text-xl tracking-wider  rounded-full">

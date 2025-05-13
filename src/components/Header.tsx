@@ -1,21 +1,19 @@
-import SearchBar from "./SearchBar";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { BiSolidGridAlt } from "react-icons/bi";
 import { FaList, FaPlus } from "react-icons/fa6";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { uiActions } from "../features/UI/UISlice";
-import BookForm from "./BookForm";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useState } from "react";
+import SearchBar from "./SearchBar";
 
 const Header = () => {
   const dispatch = useAppDispatch();
   const viewMode = useAppSelector((state) => state.ui.viewMode);
-  const [open, setOpen] = useState(false);
 
-  const closeModal = () => {
-    console.log("closeModal");
-    setOpen(false);
-  };
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const dialogOpen = location.pathname === "/books/newBook";
 
   return (
     <div id="myBooks_header" className="w-full flex items-center justify-between px-2">
@@ -39,20 +37,15 @@ const Header = () => {
         </div>
         <button
           className="flex justify-center items-center px-4 h-[40px] bg-app-primary text-white rounded-sm cursor-pointer hover:bg-primary-dark"
-          onClick={() => setOpen(true)}
+          onClick={() => navigate("/books/newBook")}
         >
           <FaPlus className="mr-2" />
           Add New book
         </button>
         {/* Modal Popup to add a new book */}
-        <Dialog modal={true} open={open} onOpenChange={setOpen}>
+        <Dialog modal={true} open={dialogOpen} onOpenChange={(open) => !open && navigate("/books")}>
           <DialogContent className="w-[450px] p-0 bg-app-background gap-0" onInteractOutside={(e) => e.preventDefault()}>
-            <DialogHeader className="sm:text-center p-4 text-app-primary">
-              <DialogTitle className="font-bold text-2xl mb-2">Add New Book</DialogTitle>
-            </DialogHeader>
-            <div className="flex items-center space-x-2">
-              <BookForm onCloseFormModal={closeModal} />
-            </div>
+            <Outlet />
           </DialogContent>
         </Dialog>
       </div>

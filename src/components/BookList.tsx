@@ -15,7 +15,7 @@ const BookList = () => {
   const { data: books = [], error, isLoading } = useBooks();
 
   const fiteredBooks = useMemo(() => {
-    return books.filter((book) => book.title.toLowerCase().includes(bookSearchTerm.toLowerCase()));
+    return books.filter((book) => book.title.toLowerCase().includes(bookSearchTerm?.toLowerCase()));
   }, [bookSearchTerm, books]);
 
   useEffect(() => {
