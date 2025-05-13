@@ -7,6 +7,7 @@ import { useState } from "react";
 import AppAlertDialog from "./shared/AppAlertDialog";
 import BookGridCard from "./BookGridCard";
 import BookListCard from "./BookListCard";
+import { useDeleteBook } from "@/hooks/useDeleteBook";
 
 interface Props {
   book: Book;
@@ -16,6 +17,8 @@ const BookListItem = ({ book }: Props) => {
   const [openBookFormModal, setOpenBookFormModal] = useState(false);
   const [openBookDeleteAlert, setOpenBookDeleteAlert] = useState(false);
   const viewMode = useAppSelector((state) => state.ui.viewMode);
+
+  const { mutate: deleteBook } = useDeleteBook();
 
   // EDIT
   const onEditBook = () => {
@@ -31,15 +34,21 @@ const BookListItem = ({ book }: Props) => {
     setOpenBookDeleteAlert(false);
   };
 
-  const deleteBook = () => {
+  const executeDelete = () => {
     console.log("Delete book", book);
+    closeOpenedDeleteAlert()
+    deleteBook(book.id);
   };
 
   // GRID MODE
   return (
     <>
-      {viewMode === 'grid' ? <BookGridCard book={book} onEdit={onEditBook} onDelete={onDeleteBook} /> : <BookListCard book={book} onEdit={onEditBook} onDelete={onDeleteBook} />}
-      
+      {viewMode === "grid" ? (
+        <BookGridCard book={book} onEdit={onEditBook} onDelete={onDeleteBook} />
+      ) : (
+        <BookListCard book={book} onEdit={onEditBook} onDelete={onDeleteBook} />
+      )}
+
       {/* Edit Form Modal */}
       <Dialog modal={true} open={openBookFormModal} onOpenChange={setOpenBookFormModal}>
         <DialogContent className="w-[450px] p-0 bg-app-background gap-0" onInteractOutside={(e) => e.preventDefault()}>
@@ -61,9 +70,9 @@ const BookListItem = ({ book }: Props) => {
         continueText="Yes, Delete"
         open={openBookDeleteAlert}
         onCancel={closeOpenedDeleteAlert}
-        onContinue={deleteBook}
+        onContinue={executeDelete}
       />
-    </>  
+    </>
   );
 };
 
