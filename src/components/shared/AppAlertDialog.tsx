@@ -15,16 +15,11 @@ interface Props {
   title: string;
   cancelText: string;
   continueText: string;
-  onClose: () => void;
+  onContinue: () => void;
   onCancel: () => void;
 }
 
-const AppAlertDialog = ({ onClose, message, title, open, onCancel, cancelText = "Cancel", continueText = "Continue" }: Props) => {
-  const onCountinue = () => {
-    onCancel();
-    onClose();
-  };
-
+const AppAlertDialog = ({ message, title, open, onContinue, onCancel, cancelText = "Cancel", continueText = "Continue" }: Props) => {
   return (
     <AlertDialog open={open}>
       <AlertDialogContent>
@@ -36,7 +31,7 @@ const AppAlertDialog = ({ onClose, message, title, open, onCancel, cancelText = 
           <AlertDialogCancel className="cursor-pointer" onClick={onCancel}>
             {cancelText}
           </AlertDialogCancel>
-          <AlertDialogAction className="cursor-pointer bg-app-secondary hover:bg-app-secondary-dark text-black" onClick={onCountinue}>
+          <AlertDialogAction className="cursor-pointer bg-app-secondary hover:bg-app-secondary-dark text-black" onClick={onContinue}>
             {continueText}
           </AlertDialogAction>
         </AlertDialogFooter>

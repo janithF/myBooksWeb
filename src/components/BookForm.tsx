@@ -22,26 +22,7 @@ interface FormValues {
 
 const BookForm = ({ onCloseFormModal, editFormData }: Props) => {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
-  const queryClient = useQueryClient()
-
-  const addBook = useMutation({
-    mutationFn: (bookData: FormValues) => {
-      return apiClient.post<Book>("books", bookData);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey:['books']
-      })
-      toast.success("Added the Book Succesfully ");
-      form.reset();
-      onCloseFormModal();
-    },
-    onError: (error) => {
-      toast.error("Failed to Add the Book", {
-        description: error.message,
-      });
-    },
-  });
+  const queryClient = useQueryClient();
 
   const form = useForm<FormValues>({
     defaultValues: editFormData || {
@@ -52,6 +33,25 @@ const BookForm = ({ onCloseFormModal, editFormData }: Props) => {
   });
   const { register, control, handleSubmit, formState, watch, setValue } = form;
   const { errors, touchedFields, dirtyFields } = formState;
+
+  const addBook = useMutation({
+    mutationFn: (bookData: FormValues) => {
+      return apiClient.post<Book>("books", bookData);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["books"],
+      });
+      toast.success("Added the Book Succesfully ");
+      form.reset();
+      onCloseFormModal();
+    },
+    onError: (error) => {
+      toast.error("Failed to Add the Book", {
+        description: error.message,
+      });
+    },
+  });
 
   const onSubmit = async (data: FormValues) => {
     let payload: FormValues;
@@ -74,14 +74,6 @@ const BookForm = ({ onCloseFormModal, editFormData }: Props) => {
     });
   };
 
-  const onCancel = () => {
-    if (Object.keys(dirtyFields).length > 0) {
-      setIsAlertOpen(true);
-    } else {
-      onCloseFormModal();
-    }
-  };
-
   const watchImgType = watch("imageType");
   useEffect(() => {
     if (editFormData) {
@@ -90,6 +82,24 @@ const BookForm = ({ onCloseFormModal, editFormData }: Props) => {
       setValue("image", "");
     }
   }, [watchImgType, touchedFields, dirtyFields, editFormData, setValue]);
+
+  // Form Modal Close Confirmation Alert functions
+  const onCancel = () => {
+    if (Object.keys(dirtyFields).length > 0) {
+      setIsAlertOpen(true);
+    } else {
+      onCloseFormModal();
+    }
+  };
+
+  const closeAlert = () => {
+    setIsAlertOpen(false);
+  };
+
+  const handleContinue = () => {
+    setIsAlertOpen(false);
+    onCloseFormModal();
+  };
 
   return (
     <>
@@ -232,10 +242,10 @@ const BookForm = ({ onCloseFormModal, editFormData }: Props) => {
       {/* Confirmation Dialog before Canceling the form */}
       <AppAlertDialog
         open={isAlertOpen}
-        onCancel={() => setIsAlertOpen(false)}
+        onCancel={closeAlert}
         title="Discard Changes?"
         message="You have unsaved changes. Close without saving?"
-        onClose={onCloseFormModal}
+        onContinue={handleContinue}
         cancelText="No"
         continueText="Yes"
       />
