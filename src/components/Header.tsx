@@ -51,7 +51,7 @@ const Header = () => {
               <DialogTitle className="font-bold text-2xl mb-2">Add New Book</DialogTitle>
             </DialogHeader>
             <div className="flex items-center space-x-2">
-              <BookForm onClose={closeModal} />
+              <BookForm onCloseFormModal={closeModal} />
             </div>
           </DialogContent>
         </Dialog>

@@ -2,10 +2,13 @@ import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { useEffect, useState } from "react";
 import AppAlertDialog from "./shared/AppAlertDialog";
-import type { ImageType } from "@/types";
+import type { Book, ImageType } from "@/types";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import apiClient from "@/services/api-client";
+import { toast } from "sonner";
 
 interface Props {
-  onClose: () => void;
+  onCloseFormModal: () => void;
   editFormData?: FormValues;
 }
 
@@ -17,8 +20,28 @@ interface FormValues {
   image: string | FileList;
 }
 
-const BookForm = ({ onClose, editFormData }: Props) => {
+const BookForm = ({ onCloseFormModal, editFormData }: Props) => {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const queryClient = useQueryClient()
+
+  const addBook = useMutation({
+    mutationFn: (bookData: FormValues) => {
+      return apiClient.post<Book>("books", bookData);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey:['books']
+      })
+      toast.success("Added the Book Succesfully ");
+      form.reset();
+      onCloseFormModal();
+    },
+    onError: (error) => {
+      toast.error("Failed to Add the Book", {
+        description: error.message,
+      });
+    },
+  });
 
   const form = useForm<FormValues>({
     defaultValues: editFormData || {
@@ -36,12 +59,10 @@ const BookForm = ({ onClose, editFormData }: Props) => {
       const file = data.image[0];
       const base64Image = await fileToBase64(file);
       payload = { ...data, image: base64Image };
-      console.log("Form Submited", payload);
     } else {
       payload = data;
-      console.log("Form Submited", payload);
     }
-    form.reset();
+    addBook.mutate(payload);
   };
 
   const fileToBase64 = (file: File): Promise<string> => {
@@ -57,7 +78,7 @@ const BookForm = ({ onClose, editFormData }: Props) => {
     if (Object.keys(dirtyFields).length > 0) {
       setIsAlertOpen(true);
     } else {
-      onClose();
+      onCloseFormModal();
     }
   };
 
@@ -158,7 +179,6 @@ const BookForm = ({ onClose, editFormData }: Props) => {
         </div>
 
         {/* Cover Image File Upload */}
-
         {watchImgType == "fileUpload" && (
           <div>
             <label htmlFor="image" className="block text-sm font-medium text-gray-700">
@@ -175,6 +195,7 @@ const BookForm = ({ onClose, editFormData }: Props) => {
           </div>
         )}
 
+        {/* Cover Image URL*/}
         {watchImgType == "url" && (
           <div>
             <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">
@@ -208,12 +229,13 @@ const BookForm = ({ onClose, editFormData }: Props) => {
         </div>
       </form>
       <DevTool control={control} />
+      {/* Confirmation Dialog before Canceling the form */}
       <AppAlertDialog
         open={isAlertOpen}
         onCancel={() => setIsAlertOpen(false)}
         title="Discard Changes?"
         message="You have unsaved changes. Close without saving?"
-        onClose={onClose}
+        onClose={onCloseFormModal}
         cancelText="No"
         continueText="Yes"
       />

@@ -98,7 +98,7 @@ const BookListItem = ({ book }: Props) => {
               <DialogDescription>{book.title}</DialogDescription>
             </DialogHeader>
             <div className="flex items-center space-x-2">
-              <BookForm onClose={()=>setOpen(false)} editFormData={book}/>
+              <BookForm onCloseFormModal={()=>setOpen(false)} editFormData={book}/>
             </div>
           </DialogContent>
         </Dialog>

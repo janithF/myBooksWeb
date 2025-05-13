@@ -1,7 +1,7 @@
 export type ImageType = "url" | "fileUpload";
 
 export interface Book {
-  id: number;
+  id: string;
   imageType: ImageType;
   image: string;
   title: string;
