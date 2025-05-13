@@ -2,10 +2,8 @@ import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { useEffect, useState } from "react";
 import AppAlertDialog from "./shared/AppAlertDialog";
-import type { Book, ImageType } from "@/types";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import apiClient from "@/services/api-client";
-import { toast } from "sonner";
+import type { ImageType } from "@/types";
+import useAddBook from "@/hooks/useAddBook";
 
 interface Props {
   onCloseFormModal: () => void;
@@ -22,7 +20,10 @@ interface FormValues {
 
 const BookForm = ({ onCloseFormModal, editFormData }: Props) => {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
-  const queryClient = useQueryClient();
+  const { mutate: addBook, isPending: isAddBookPending } = useAddBook<FormValues>(() => {
+    form.reset();
+    onCloseFormModal();
+  });
 
   const form = useForm<FormValues>({
     defaultValues: editFormData || {
@@ -34,25 +35,6 @@ const BookForm = ({ onCloseFormModal, editFormData }: Props) => {
   const { register, control, handleSubmit, formState, watch, setValue } = form;
   const { errors, touchedFields, dirtyFields } = formState;
 
-  const addBook = useMutation({
-    mutationFn: (bookData: FormValues) => {
-      return apiClient.post<Book>("books", bookData);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["books"],
-      });
-      toast.success("Added the Book Succesfully ");
-      form.reset();
-      onCloseFormModal();
-    },
-    onError: (error) => {
-      toast.error("Failed to Add the Book", {
-        description: error.message,
-      });
-    },
-  });
-
   const onSubmit = async (data: FormValues) => {
     let payload: FormValues;
     if (typeof data.image !== "string" && data.image instanceof FileList) {
@@ -62,7 +44,7 @@ const BookForm = ({ onCloseFormModal, editFormData }: Props) => {
     } else {
       payload = data;
     }
-    addBook.mutate(payload);
+    addBook(payload);
   };
 
   const fileToBase64 = (file: File): Promise<string> => {
@@ -225,19 +207,19 @@ const BookForm = ({ onCloseFormModal, editFormData }: Props) => {
         <div className="pt-4">
           <button
             type="submit"
-            disabled={addBook.isPending}
+            disabled={isAddBookPending}
             className={`w-full border border-app-primary text-white py-2 px-4 rounded-md transition mb-3 ${
-              addBook.isPending ? "bg-app-primary-light cursor-not-allowed" : "bg-app-primary hover:bg-app-primary-dark cursor-pointer "
+              isAddBookPending ? "bg-app-primary-light cursor-not-allowed" : "bg-app-primary hover:bg-app-primary-dark cursor-pointer "
             }`}
           >
-            {addBook.isPending ? "...Adding" : "Add"}
+            {isAddBookPending ? "...Adding" : "Add"}
           </button>
           <button
             type="button"
-            disabled={addBook.isPending}
+            disabled={isAddBookPending}
             onClick={onCancel}
             className={`w-full  py-2 px-4 rounded-md transition border border-gray-400 ${
-              addBook.isPending ? "text-gray-500 cursor-not-allowed" : "text-gray-600 cursor-pointer hover:bg-gray-100"
+              isAddBookPending ? "text-gray-500 cursor-not-allowed" : "text-gray-600 cursor-pointer hover:bg-gray-100"
             }`}
           >
             Cancel

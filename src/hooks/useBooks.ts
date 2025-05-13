@@ -1,3 +1,4 @@
+import { CACHE_KEY_BOOKS } from "@/constants";
 import apiClient from "@/services/api-client";
 import type { Book } from "@/types";
 import { useQuery } from "@tanstack/react-query";
@@ -10,7 +11,7 @@ const useBooks = () => {
   };
 
   return useQuery<Book[]>({
-    queryKey: ["books"],
+    queryKey: CACHE_KEY_BOOKS,
     queryFn: fetchBooks,
   });
 };
