@@ -225,14 +225,20 @@ const BookForm = ({ onCloseFormModal, editFormData }: Props) => {
         <div className="pt-4">
           <button
             type="submit"
-            className="w-full bg-app-primary hover:bg-app-primary-dark border border-app-primary text-white py-2 px-4 rounded-md transition cursor-pointer mb-3"
+            disabled={addBook.isPending}
+            className={`w-full border border-app-primary text-white py-2 px-4 rounded-md transition mb-3 ${
+              addBook.isPending ? "bg-app-primary-light cursor-not-allowed" : "bg-app-primary hover:bg-app-primary-dark cursor-pointer "
+            }`}
           >
-            Submit
+            {addBook.isPending ? "...Adding" : "Add"}
           </button>
           <button
             type="button"
+            disabled={addBook.isPending}
             onClick={onCancel}
-            className="w-full text-gray-600 py-2 px-4 rounded-md transition cursor-pointer border border-gray-400 hover:bg-gray-100"
+            className={`w-full  py-2 px-4 rounded-md transition border border-gray-400 ${
+              addBook.isPending ? "text-gray-500 cursor-not-allowed" : "text-gray-600 cursor-pointer hover:bg-gray-100"
+            }`}
           >
             Cancel
           </button>

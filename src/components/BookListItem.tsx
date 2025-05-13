@@ -63,8 +63,7 @@ const BookListItem = ({ book }: Props) => {
         onCancel={closeOpenedDeleteAlert}
         onContinue={deleteBook}
       />
-    </>
-      
+    </>  
   );
 };
 
