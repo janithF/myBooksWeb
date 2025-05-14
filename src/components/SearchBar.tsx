@@ -35,15 +35,15 @@ const SearchBar = () => {
   }, [watchSearchTerm, dispatch, setSearchParams, searchParams]);
 
   return (
-    <div className="w-full max-w-md font-app-title text-xl tracking-wider  rounded-full">
-      <div className="flex items-center border-0">
-        <FiSearch className="mr-2" />
+    <div className="w-full max-w-md font-app-title tracking-wider rounded-full">
+      <div className="flex items-center border-0 ">
+        <FiSearch className="mr-2 text-xl lg:text-2xl" />
         <input
           id="serchTerm"
           type="text"
           placeholder="Search Book Name"
           {...register("searchterm")}
-          className="w-full bg-transparent outline-none text-gray-700 placeholder-gray-400 border-b border-app-secondary py-1"
+          className="w-full bg-transparent outline-none text-gray-700 text-lg lg:text-xl  placeholder-gray-400 border-b border-app-secondary py-1"
         />
       </div>
       {/* <DevTool control={control} /> */}

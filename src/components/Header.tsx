@@ -1,17 +1,17 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { BiSolidGridAlt } from "react-icons/bi";
 import { FaList, FaPlus } from "react-icons/fa6";
+
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { uiActions } from "../features/UI/UISlice";
+
 import SearchBar from "./SearchBar";
-import { RiMenuLine } from "react-icons/ri";
-import { useEffect } from "react";
-import AppSideBar from "./shared/AppSideBar";
-import AuthorsList from "./AuthorsList";
+
+import AppTitle from "./AppTitle";
 
 const Header = () => {
-  const isSidebarOpen = useAppSelector((state) => state.ui.isSidebarOpen);
+  
   const dispatch = useAppDispatch();
   const viewMode = useAppSelector((state) => state.ui.viewMode);
 
@@ -20,35 +20,19 @@ const Header = () => {
 
   const dialogOpen = location.pathname === "/books/newBook";
 
-  const closeSidebar = () => {
-    console.log("closeSidebar function called");
-    dispatch(uiActions.closeSideBar());
-  };
-
-  const openSidebar = () => {
-    dispatch(uiActions.openSidebar());
-  };
-
-  useEffect(() => {
-    console.log("isOpen state updated:", isSidebarOpen);
-  }, [isSidebarOpen]);
-
   return (
-    <div id="myBooks_header" className="w-full flex items-center justify-between px-2">
-      {/* Sidebar */}
-      <div className="lg:hidden cursor-pointer mr-4" onClick={openSidebar}>
-        <RiMenuLine className="text-2xl" />
+    <div id="myBooks_header" className="w-full grid grid-rows-2 lg:flex lg:items-center lg:justify-between px-2">
+      <div className="lg:hidden mb-2">
+        <AppTitle />
       </div>
-      <AppSideBar isOpen={isSidebarOpen} onClose={closeSidebar} width="w-80">
-        <AuthorsList />
-      </AppSideBar>
-
-      {/* Searchbar */}
-      <div className="flex-1">
-        <SearchBar />
+      <div id="myBooks_header-section_a" className="flex items-center mb-4 lg:flex-1 lg:mr-4">
+        {/* Searchbar */}
+        <div className="flex w-full lg:flex-1 lg:justify-start">
+          <SearchBar />
+        </div>
       </div>
       {/* Action Buttons */}
-      <div className="flex justify-center items-center">
+      <div id="myBooks_header-section_b" className="flex justify-end items-center">
         <div className="mr-4">
           <button
             className={`p-3 cursor-pointer rounded-md text-app-primary ${viewMode === "grid" && "bg-app-secondary"}`}
