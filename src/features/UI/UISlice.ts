@@ -8,6 +8,7 @@ interface InitialState {
   searchTerm: string;
   filteredBooksLength: number;
   editBook: Book | null;
+  selectedAuthor: string | null;
 }
 
 const initialState: InitialState = {
@@ -15,6 +16,7 @@ const initialState: InitialState = {
   searchTerm: "",
   filteredBooksLength: 0,
   editBook: null,
+  selectedAuthor: null,
 };
 
 const UISlice = createSlice({
@@ -32,6 +34,9 @@ const UISlice = createSlice({
     },
     editBook: (state, action: PayloadAction<Book>) => {
       state.editBook = action.payload;
+    },
+    selectAuthor: (state, action: PayloadAction<string | null>) => {
+      state.selectedAuthor = action.payload;
     },
   },
 });

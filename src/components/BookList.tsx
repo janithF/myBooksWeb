@@ -9,14 +9,19 @@ import { uiActions } from "@/features/UI/UISlice";
 
 const BookList = () => {
   const viewMode = useAppSelector((state) => state.ui.viewMode);
-  const bookSearchTerm = useAppSelector((state) => state.ui.searchTerm);
+  const { searchTerm: bookSearchTerm, selectedAuthor } = useAppSelector((state) => state.ui);
   const dispatch = useAppDispatch();
 
   const { data: books = [], error, isLoading } = useBooks();
 
   const fiteredBooks = useMemo(() => {
-    return books.filter((book) => book.title.toLowerCase().includes(bookSearchTerm?.toLowerCase()));
-  }, [bookSearchTerm, books]);
+    return books.filter((book) => {
+      const matchesTitle = bookSearchTerm ? book.title.toLowerCase().includes(bookSearchTerm?.toLowerCase()) : true;
+      const matchesAuthor = selectedAuthor ? book.author.toLowerCase().includes(selectedAuthor?.toLowerCase()) : true;
+
+      return matchesTitle && matchesAuthor;
+    });
+  }, [bookSearchTerm, books, selectedAuthor]);
 
   useEffect(() => {
     dispatch(uiActions.booksFiltered(fiteredBooks.length));

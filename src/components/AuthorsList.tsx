@@ -1,15 +1,34 @@
-import { FaFeather } from "react-icons/fa6";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { uiActions } from "@/features/UI/UISlice";
 import useBooks from "@/hooks/useBooks";
-import LoadingAuthorsListItem from "./loadingSkeletons/LoadingAuthorsListItem";
+import { FaFeather } from "react-icons/fa6";
 import { VscError } from "react-icons/vsc";
+import { useSearchParams } from "react-router-dom";
+import LoadingAuthorsListItem from "./loadingSkeletons/LoadingAuthorsListItem";
 
 const AuthorsList = () => {
   const { data: books, error, isLoading } = useBooks();
+
+  const selectedAuthor = useAppSelector((state) => state.ui.selectedAuthor);
+  const dispatch = useAppDispatch();
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const getAuthors = (): string[] => {
     const allAuthors = books?.map((book) => book.author.toLowerCase().trim());
     const authors = [...new Set(allAuthors)];
     return authors;
+  };
+
+  const selectAuthor = (author: string) => {
+    dispatch(uiActions.selectAuthor(author));
+    const newParams = new URLSearchParams(searchParams);
+    if (author) {
+      newParams.set("author", author);
+    } else {
+      newParams.delete("search");
+    }
+    setSearchParams(newParams);
   };
 
   return (
@@ -22,12 +41,23 @@ const AuthorsList = () => {
         <div className="pt-2">{isLoading && [...Array(5)].map((_, index) => <LoadingAuthorsListItem key={index} />)}</div>
 
         {/* Error Message */}
-        {error && <div className="p-2 flex items-center"><VscError className="text-red-400 mr-2" /><span className="text-sm">Error Loading Authors List</span></div>}
+        {error && (
+          <div className="p-2 flex items-center">
+            <VscError className="text-red-400 mr-2" />
+            <span className="text-sm">Error Loading Authors List</span>
+          </div>
+        )}
 
         {/* Display Authors List */}
         {!isLoading &&
           getAuthors().map((author, index) => (
-            <div key={index} className="mb-1 p-2 mr-2 cursor-pointer hover:bg-background rounded-md transition duration-50 ease-in-out capitalize">
+            <div
+              key={index}
+              className={`mb-1 p-2 mr-2 cursor-pointer hover:bg-background rounded-md transition duration-50 ease-in-out capitalize ${
+                selectedAuthor?.toLowerCase() === author.toLowerCase() ? "bg-app-background" : "bg-transparent"
+              }`}
+              onClick={() => selectAuthor(author)}
+            >
               {author}
             </div>
           ))}

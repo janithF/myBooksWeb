@@ -14,7 +14,7 @@ const SearchBar = () => {
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const defaultSearchParam = searchParams.get("search") || "";
-  
+
   const form = useForm<FormValues>({
     defaultValues: {
       searchterm: defaultSearchParam,
@@ -24,14 +24,15 @@ const SearchBar = () => {
   const watchSearchTerm = watch("searchterm");
 
   useEffect(() => {
+    const newParams = new URLSearchParams(searchParams);
     dispatch(uiActions.searchBook(watchSearchTerm));
-
     if (watchSearchTerm) {
-      setSearchParams({ search: watchSearchTerm });
+      newParams.set("search", watchSearchTerm);
     } else {
-      setSearchParams({});
+      newParams.delete("search");
     }
-  }, [watchSearchTerm, dispatch, setSearchParams]);
+    setSearchParams(newParams);
+  }, [watchSearchTerm, dispatch, setSearchParams, searchParams]);
 
   return (
     <div className="w-full max-w-md font-app-title text-xl tracking-wider  rounded-full">
