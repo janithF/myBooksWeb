@@ -19,4 +19,9 @@ Follow these steps to run the project locally:
     ```
 
 The app will be available at [http://localhost:5173](http://localhost:5173) by default.
+
 ![chrome_H2OFVc0q92](https://github.com/user-attachments/assets/802e8e44-2d9a-4b74-81c4-90a9c3f7894b)
+
+![chrome_kEnWBP4h3Z](https://github.com/user-attachments/assets/cbf73fd8-07e7-4f2e-8ff9-8756ef4950bb)
+
+![XY6iyc3MRy](https://github.com/user-attachments/assets/e7c1cf22-ceeb-428a-b3ef-840f52bce783)
