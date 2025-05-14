@@ -8,8 +8,6 @@ import { toast } from "sonner";
 const useEditBooks = (id: string | undefined, onEditComplete:()=>void) => {
   const queryClient = useQueryClient();
 
-  if (!id) toast.error("Edit Book | No Id Provided");
-
   return useMutation({
     mutationFn: (bookData: BookFormValues) => {
       return apiClient.patch<Book>(`books/${id}`, bookData);

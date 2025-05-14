@@ -1,6 +1,6 @@
 import { useAppDispatch } from "@/app/hooks";
 import { uiActions } from "@/features/UI/UISlice";
-import { DevTool } from "@hookform/devtools";
+// import { DevTool } from "@hookform/devtools";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FiSearch } from "react-icons/fi";
@@ -20,7 +20,7 @@ const SearchBar = () => {
       searchterm: defaultSearchParam,
     },
   });
-  const { register, control, watch } = form;
+  const { register, watch } = form;
   const watchSearchTerm = watch("searchterm");
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const SearchBar = () => {
           className="w-full bg-transparent outline-none text-gray-700 placeholder-gray-400 border-b border-app-secondary py-1"
         />
       </div>
-      <DevTool control={control} />
+      {/* <DevTool control={control} /> */}
     </div>
   );
 };

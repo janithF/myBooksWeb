@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
+// import { DevTool } from "@hookform/devtools";
 import { useEffect, useState } from "react";
 import AppAlertDialog from "./shared/AppAlertDialog";
 import type { ImageType } from "@/types";
@@ -40,7 +40,7 @@ const BookForm = ({ onCloseFormModal, editFormData }: Props) => {
       imageType: "url",
     },
   });
-  const { register, control, handleSubmit, formState, watch, setValue } = form;
+  const { register, handleSubmit, formState, watch, setValue } = form;
   const { errors, touchedFields, dirtyFields } = formState;
 
   const onSubmit = async (data: BookFormValues) => {
@@ -258,7 +258,7 @@ const BookForm = ({ onCloseFormModal, editFormData }: Props) => {
           </button>
         </div>
       </form>
-      <DevTool control={control} />
+      {/* <DevTool control={control} /> */}
       {/* Confirmation Dialog before Canceling the form */}
       <AppAlertDialog
         open={isAlertOpen}
