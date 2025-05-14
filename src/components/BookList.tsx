@@ -1,11 +1,12 @@
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import BookListItem from "./BookListItem";
+import { uiActions } from "@/features/UI/UISlice";
 import useBooks from "@/hooks/useBooks";
-import LoadingBookListItem from "./loadingSkeletons/LoadingBookListItem";
+import { useEffect, useMemo } from "react";
 import { BiError } from "react-icons/bi";
 import { MdSearchOff } from "react-icons/md";
-import { useEffect, useMemo } from "react";
-import { uiActions } from "@/features/UI/UISlice";
+import { matchPath, useLocation } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import BookListItem from "./BookListItem";
+import LoadingBookListItem from "./loadingSkeletons/LoadingBookListItem";
 
 const BookList = () => {
   const viewMode = useAppSelector((state) => state.ui.viewMode);
@@ -13,6 +14,9 @@ const BookList = () => {
   const dispatch = useAppDispatch();
 
   const { data: books = [], error, isLoading } = useBooks();
+
+  const location = useLocation();
+  const matchEditPath = matchPath("books/edit/:id", location.pathname);
 
   const fiteredBooks = useMemo(() => {
     return books.filter((book) => {
@@ -25,7 +29,14 @@ const BookList = () => {
 
   useEffect(() => {
     dispatch(uiActions.booksFiltered(fiteredBooks.length));
-  }, [fiteredBooks.length, dispatch]);
+    if (matchEditPath) {
+      const id = matchEditPath?.params.id;
+      const editItem = books.find((book) => book.id === id);
+      if (editItem) {
+        dispatch(uiActions.editBook(editItem));
+      }
+    }
+  }, [fiteredBooks.length, dispatch, matchEditPath, books]);
 
   if (isLoading)
     return (

@@ -5,26 +5,28 @@ import type { Book } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-const useAddBook = (onAddComplete: () => void) => {
+const useEditBooks = (id: string | undefined, onEditComplete:()=>void) => {
   const queryClient = useQueryClient();
+
+  if (!id) toast.error("Edit Book | No Id Provided");
 
   return useMutation({
     mutationFn: (bookData: BookFormValues) => {
-      return apiClient.post<Book>("books", bookData);
+      return apiClient.patch<Book>(`books/${id}`, bookData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: CACHE_KEY_BOOKS,
       });
-      toast.success("Added the Book Succesfully ");
-      onAddComplete();
+      toast.success("updated the Book Succesfully ");
+      onEditComplete();
     },
     onError: (error) => {
-      toast.error("Failed to Add the Book", {
+      toast.error("Failed to Update the Book", {
         description: error.message,
       });
     },
   });
 };
 
-export default useAddBook;
+export default useEditBooks;

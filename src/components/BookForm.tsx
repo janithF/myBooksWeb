@@ -4,13 +4,15 @@ import { useEffect, useState } from "react";
 import AppAlertDialog from "./shared/AppAlertDialog";
 import type { ImageType } from "@/types";
 import useAddBook from "@/hooks/useAddBook";
+import useEditBooks from "@/hooks/useEditBooks";
+import { useAppSelector } from "@/app/hooks";
 
 interface Props {
   onCloseFormModal: () => void;
-  editFormData?: FormValues;
+  editFormData?: BookFormValues;
 }
 
-interface FormValues {
+export interface BookFormValues {
   title: string;
   author: string;
   rating: number;
@@ -20,12 +22,18 @@ interface FormValues {
 
 const BookForm = ({ onCloseFormModal, editFormData }: Props) => {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
-  const { mutate: addBook, isPending: isAddBookPending } = useAddBook<FormValues>(() => {
+  const { editBook: itemToEdit } = useAppSelector((state) => state.ui);
+
+  const { mutate: addBook, isPending: isAddBookPending } = useAddBook(() => {
     form.reset();
     onCloseFormModal();
   });
 
-  const form = useForm<FormValues>({
+  const { mutate: editBook, isPending: isEditPending } = useEditBooks(itemToEdit?.id, () => {
+    onCloseFormModal();
+  });
+
+  const form = useForm<BookFormValues>({
     defaultValues: editFormData || {
       title: "",
       author: "",
@@ -35,8 +43,9 @@ const BookForm = ({ onCloseFormModal, editFormData }: Props) => {
   const { register, control, handleSubmit, formState, watch, setValue } = form;
   const { errors, touchedFields, dirtyFields } = formState;
 
-  const onSubmit = async (data: FormValues) => {
-    let payload: FormValues;
+  const onSubmit = async (data: BookFormValues) => {
+    let payload: BookFormValues;
+
     if (typeof data.image !== "string" && data.image instanceof FileList) {
       const file = data.image[0];
       const base64Image = await fileToBase64(file);
@@ -44,7 +53,28 @@ const BookForm = ({ onCloseFormModal, editFormData }: Props) => {
     } else {
       payload = data;
     }
-    addBook(payload);
+
+    if (editFormData) {
+      editBook(payload);
+    } else {
+      addBook(payload);
+    }
+  };
+
+  const renderSubmitButtonText = (): string => {
+    if (editFormData) {
+      if (isEditPending) {
+        return "...Updating";
+      } else {
+        return "Update";
+      }
+    } else {
+      if (isAddBookPending) {
+        return "...Adding";
+      } else {
+        return "Add";
+      }
+    }
   };
 
   const fileToBase64 = (file: File): Promise<string> => {
@@ -207,19 +237,21 @@ const BookForm = ({ onCloseFormModal, editFormData }: Props) => {
         <div className="pt-4">
           <button
             type="submit"
-            disabled={isAddBookPending}
+            disabled={isAddBookPending || isEditPending}
             className={`w-full border border-app-primary text-white py-2 px-4 rounded-md transition mb-3 ${
-              isAddBookPending ? "bg-app-primary-light cursor-not-allowed" : "bg-app-primary hover:bg-app-primary-dark cursor-pointer "
+              isAddBookPending || isEditPending
+                ? "bg-app-primary-light cursor-not-allowed"
+                : "bg-app-primary hover:bg-app-primary-dark cursor-pointer "
             }`}
           >
-            {isAddBookPending ? "...Adding" : "Add"}
+            {renderSubmitButtonText()}
           </button>
           <button
             type="button"
-            disabled={isAddBookPending}
+            disabled={isAddBookPending || isEditPending}
             onClick={onCancel}
             className={`w-full  py-2 px-4 rounded-md transition border border-gray-400 ${
-              isAddBookPending ? "text-gray-500 cursor-not-allowed" : "text-gray-600 cursor-pointer hover:bg-gray-100"
+              isAddBookPending || isEditPending ? "text-gray-500 cursor-not-allowed" : "text-gray-600 cursor-pointer hover:bg-gray-100"
             }`}
           >
             Cancel
