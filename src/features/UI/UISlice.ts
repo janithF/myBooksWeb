@@ -1,3 +1,4 @@
+import type { Book } from "@/types";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 export type ViewMode = "grid" | "list";
@@ -6,12 +7,14 @@ interface InitialState {
   viewMode: ViewMode;
   searchTerm: string;
   filteredBooksLength: number;
+  editBook: Book | null;
 }
 
 const initialState: InitialState = {
   viewMode: "grid",
   searchTerm: "",
   filteredBooksLength: 0,
+  editBook: null,
 };
 
 const UISlice = createSlice({
@@ -26,6 +29,9 @@ const UISlice = createSlice({
     },
     booksFiltered: (state, action: PayloadAction<number>) => {
       state.filteredBooksLength = action.payload;
+    },
+    editBook: (state, action: PayloadAction<Book>) => {
+      state.editBook = action.payload;
     },
   },
 });

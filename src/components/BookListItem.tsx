@@ -1,28 +1,36 @@
 import type { Book } from "../types";
 
-import { useAppSelector } from "../app/hooks";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./ui/dialog";
-import BookForm from "./BookForm";
+import { uiActions } from "@/features/UI/UISlice";
+import { useDeleteBook } from "@/hooks/useDeleteBook";
 import { useState } from "react";
-import AppAlertDialog from "./shared/AppAlertDialog";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import BookGridCard from "./BookGridCard";
 import BookListCard from "./BookListCard";
-import { useDeleteBook } from "@/hooks/useDeleteBook";
+import AppAlertDialog from "./shared/AppAlertDialog";
+import { Dialog, DialogContent } from "./ui/dialog";
 
 interface Props {
   book: Book;
 }
 
 const BookListItem = ({ book }: Props) => {
-  const [openBookFormModal, setOpenBookFormModal] = useState(false);
   const [openBookDeleteAlert, setOpenBookDeleteAlert] = useState(false);
+
   const viewMode = useAppSelector((state) => state.ui.viewMode);
+  const dispatch = useAppDispatch();
 
   const { mutate: deleteBook } = useDeleteBook();
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const showEditModal = location.pathname === `/books/edit/${book.id}`;
+
   // EDIT
   const onEditBook = () => {
-    setOpenBookFormModal(true);
+    dispatch(uiActions.editBook(book));
+    navigate(`/books/edit/${book.id}`);
   };
 
   // DELETE
@@ -35,7 +43,7 @@ const BookListItem = ({ book }: Props) => {
   };
 
   const executeDelete = () => {
-    closeOpenedDeleteAlert()
+    closeOpenedDeleteAlert();
     deleteBook(book.id);
   };
 
@@ -49,17 +57,11 @@ const BookListItem = ({ book }: Props) => {
       )}
 
       {/* Edit Form Modal */}
-      <Dialog modal={true} open={openBookFormModal} onOpenChange={setOpenBookFormModal}>
+      <Dialog modal={true} open={showEditModal} onOpenChange={(open) => !open && navigate("/books")}>
         <DialogContent className="w-[450px] p-0 bg-app-background gap-0" onInteractOutside={(e) => e.preventDefault()}>
-          <DialogHeader className="sm:text-center p-4 text-app-primary gap-0">
-            <DialogTitle className="font-bold text-2xl mb-2">Edit Book</DialogTitle>
-            <DialogDescription>{book.title}</DialogDescription>
-          </DialogHeader>
-          <div className="flex items-center space-x-2">
-            <BookForm onCloseFormModal={() => setOpenBookFormModal(false)} editFormData={book} />
-          </div>
+          <Outlet />
         </DialogContent>
-      </Dialog>
+      </Dialog>      
 
       {/* Delete Alert */}
       <AppAlertDialog
