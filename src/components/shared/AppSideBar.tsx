@@ -6,7 +6,6 @@ export interface Props {
   onClose: () => void;
   children: ReactNode;
   width?: string;
-  className?: string;
 }
 
 const AppSideBar = ({ isOpen, onClose, children, width = "w-64" }: Props) => {

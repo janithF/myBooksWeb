@@ -9,7 +9,7 @@ import LoadingAuthorsListItem from "./loadingSkeletons/LoadingAuthorsListItem";
 const AuthorsList = () => {
   const { data: books, error, isLoading } = useBooks();
 
-  const selectedAuthor = useAppSelector((state) => state.ui.selectedAuthor);
+  const { selectedAuthor, isSidebarOpen } = useAppSelector((state) => state.ui);
   const dispatch = useAppDispatch();
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -22,6 +22,9 @@ const AuthorsList = () => {
 
   const selectAuthor = (author: string) => {
     dispatch(uiActions.selectAuthor(author));
+    if (isSidebarOpen) {
+      dispatch(uiActions.closeSideBar());
+    }
     const newParams = new URLSearchParams(searchParams);
     if (author) {
       newParams.set("author", author);

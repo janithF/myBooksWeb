@@ -9,6 +9,7 @@ interface InitialState {
   filteredBooksLength: number;
   editBook: Book | null;
   selectedAuthor: string | null;
+  isSidebarOpen: boolean;
 }
 
 const initialState: InitialState = {
@@ -17,6 +18,7 @@ const initialState: InitialState = {
   filteredBooksLength: 0,
   editBook: null,
   selectedAuthor: null,
+  isSidebarOpen: false,
 };
 
 const UISlice = createSlice({
@@ -37,6 +39,12 @@ const UISlice = createSlice({
     },
     selectAuthor: (state, action: PayloadAction<string | null>) => {
       state.selectedAuthor = action.payload;
+    },
+    openSidebar: (state) => {
+      state.isSidebarOpen = true;
+    },
+    closeSideBar: (state) => {
+      state.isSidebarOpen = false;
     },
   },
 });
