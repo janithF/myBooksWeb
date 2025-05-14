@@ -5,8 +5,14 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { uiActions } from "../features/UI/UISlice";
 import SearchBar from "./SearchBar";
+import { RiMenuLine } from "react-icons/ri";
+import { useEffect, useState } from "react";
+import AppSideBar from "./shared/AppSideBar";
+import AuthorsList from "./AuthorsList";
 
 const Header = () => {
+  const [isOpen,setOpen] = useState(false)
+
   const dispatch = useAppDispatch();
   const viewMode = useAppSelector((state) => state.ui.viewMode);
 
@@ -15,8 +21,23 @@ const Header = () => {
 
   const dialogOpen = location.pathname === "/books/newBook";
 
+  const closeSidebar = () => {
+    console.log("close");
+    setOpen(false)
+  };
+
+  useEffect(() => {
+    console.log("isSidebarOpen", setOpen);
+  }, [setOpen]);
+
   return (
     <div id="myBooks_header" className="w-full flex items-center justify-between px-2">
+      <div className="lg:hidden cursor-pointer mr-4" onClick={() => setOpen(true)}>
+        <RiMenuLine className="text-2xl" />
+        <AppSideBar isOpen={isOpen} onClose={closeSidebar} width="w-80" className="bg-app-background-dark">
+          <AuthorsList />
+        </AppSideBar>
+      </div>
       <div className="flex-1">
         <SearchBar />
       </div>

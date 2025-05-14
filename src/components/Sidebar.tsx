@@ -1,4 +1,3 @@
-import React from "react";
 import { FaBook } from "react-icons/fa6";
 import AuthorsList from "./AuthorsList";
 

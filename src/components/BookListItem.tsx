@@ -61,7 +61,7 @@ const BookListItem = ({ book }: Props) => {
         <DialogContent className="w-[450px] p-0 bg-app-background gap-0" onInteractOutside={(e) => e.preventDefault()}>
           <Outlet />
         </DialogContent>
-      </Dialog>      
+      </Dialog>
 
       {/* Delete Alert */}
       <AppAlertDialog
