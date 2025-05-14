@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -6,15 +6,15 @@
 
 /* Custom CSS Variables or Styles can go below */
 @theme {
-  --font-app-title: "Playfair Display", serif;
-  --font-app-body: "Inter", sans-serif;
+  --font-app-title: "Merriweather", serif;
+  --font-app-body: "Open Sans", sans-serif;
 
-  --color-app-primary-light: #6B5B91;
-  --color-app-primary: #4B3F72;
-  --color-app-primary-dark: #3B2F5A;
-  --color-app-secondary: #F0C987;
-  --color-app-secondary-dark: #D9B465;
-  --color-app-accent: #3C9D9B;
+  --color-app-primary-light: #6b5b91;
+  --color-app-primary: #4b3f72;
+  --color-app-primary-dark: #3b2f5a;
+  --color-app-secondary: #f0c987;
+  --color-app-secondary-dark: #d9b465;
+  --color-app-accent: #3c9d9b;
   --color-app-background: #f1eee3;
   --color-app-background-dark: #dad5be;
 }
@@ -132,6 +132,6 @@
   }
   body {
     @apply bg-background text-foreground;
-    @apply font-app-body
+    @apply font-app-body;
   }
 }
